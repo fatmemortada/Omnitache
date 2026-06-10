@@ -1187,88 +1187,58 @@
   <script>
     document.getElementById('year').textContent = new Date().getFullYear();
 
-    // Mobile menu
-    const hamburger = document.getElementById('hamburgerBtn');
-    const mobileMenu = document.getElementById('mobileMenu');
-    hamburger.addEventListener('click', () => mobileMenu.classList.toggle('open'));
+    var hamburger = document.getElementById('hamburgerBtn');
+    var mobileMenu = document.getElementById('mobileMenu');
+    hamburger.addEventListener('click', function() { mobileMenu.classList.toggle('open'); });
     function closeMobile() { mobileMenu.classList.remove('open'); }
 
-    // Form handler
     function sendMeetingRequest(event) {
       event.preventDefault();
-      const recipient = 'h.mortada@omnitache.com';
-      const name = document.getElementById('name').value.trim();
-      const company = document.getElementById('company').value.trim();
-      const email = document.getElementById('email').value.trim();
-      const phone = document.getElementById('phone').value.trim();
-      const message = document.getElementById('message').value.trim();
-      const subject = `Meeting Request - ${company || name}`;
-      const body = `Hello Omnitache,\n\nI would like to request a consultation.\n\nName: ${name}\nCompany: ${company}\nEmail: ${email}\nPhone: ${phone}\n\nProject / Request:\n${message}\n\nThank you.`;
-      const mailtoLink = `mailto:${recipient}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-      window.open(mailtoLink, '_self');
+      var recipient = 'h.mortada@omnitache.com';
+      var name = document.getElementById('name').value.trim();
+      var company = document.getElementById('company').value.trim();
+      var email = document.getElementById('email').value.trim();
+      var phone = document.getElementById('phone').value.trim();
+      var message = document.getElementById('message').value.trim();
+      var subject = 'Meeting Request - ' + (company || name);
+      var body = 'Hello Omnitache,\n\nName: ' + name + '\nCompany: ' + company + '\nEmail: ' + email + '\nPhone: ' + phone + '\n\nRequest:\n' + message;
+      window.open('mailto:' + recipient + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body), '_self');
     }
 
-    // Scroll animations
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+    var observer = new IntersectionObserver(function(entries) {
+      entries.forEach(function(e) { if (e.isIntersecting) e.target.classList.add('visible'); });
     }, { threshold: 0.12 });
-    document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+    document.querySelectorAll('.fade-up').forEach(function(el) { observer.observe(el); });
 
-
-
-    // ── LANGUAGE SWITCHER ────────────────────────────────────────────
     function setLang(lang) {
-      // Update buttons
-      document.querySelectorAll('.lang-btn').forEach(btn => {
+      document.querySelectorAll('.lang-btn').forEach(function(btn) {
         btn.classList.toggle('active', btn.textContent.trim() === lang.toUpperCase());
       });
-
-      // Translate all elements with data-en / data-fr
-      document.querySelectorAll('[data-en][data-fr]').forEach(el => {
-        const val = el.getAttribute('data-' + lang);
-        if (!val) return;
-        // For elements that had inner HTML (like em tags), use innerHTML carefully
-        if (el.innerHTML.includes('<em>') || el.innerHTML.includes('<span')) {
-          el.textContent = val;
-        } else {
-          el.textContent = val;
-        }
+      document.querySelectorAll('[data-en][data-fr]').forEach(function(el) {
+        var val = el.getAttribute('data-' + lang);
+        if (val) el.textContent = val;
       });
-
-      // Form placeholders
-      const phs = {
-        en: { name: 'Your name', company: 'Company name', email: 'your@email.com', phone: 'Phone number', message: 'Bid support, SharePoint setup, Excel tracking, automation, project advisory...' },
-        fr: { name: 'Votre nom', company: "Nom de l'entreprise", email: 'votre@courriel.com', phone: 'Numéro de téléphone', message: 'Soutien aux soumissions, SharePoint, Excel, automatisation, conseil en projet...' }
+      var phs = {
+        en: { name: 'Your name', company: 'Company name', email: 'your@email.com', phone: 'Phone number', message: 'Bid support, SharePoint setup, Excel tracking, automation...' },
+        fr: { name: 'Votre nom', company: 'Nom de entreprise', email: 'votre@courriel.com', phone: 'Numero de telephone', message: 'Soutien aux soumissions, SharePoint, Excel, automatisation...' }
       };
-      ['name','company','email','phone','message'].forEach(id => {
-        const el = document.getElementById(id);
-        if (el && phs[lang][id]) el.placeholder = phs[lang][id];
+      ['name','company','email','phone','message'].forEach(function(id) {
+        var el = document.getElementById(id);
+        if (el && phs[lang]) el.placeholder = phs[lang][id] || '';
       });
-
-      // Ticker (replace content)
-      const tickers = {
-        en: ['Bid & Tender Consulting','SharePoint Systems','Excel Tools & Reporting','Workflow Automation','Project Advisory','Operational Organization','Construction Intelligence'],
-        fr: ['Conseil en Appels d'Offres','Systèmes SharePoint','Outils Excel & Rapports','Automatisation des Flux','Conseil en Projet','Organisation Opérationnelle','Intelligence Construction']
+      var tickers = {
+        en: ['Bid & Tender Consulting','SharePoint Systems','Excel Tools & Reporting','Workflow Automation','Project Advisory','Operational Organization'],
+        fr: ['Conseil en Appels Offres','Systemes SharePoint','Outils Excel & Rapports','Automatisation','Conseil en Projet','Organisation Operationnelle']
       };
-      const tickerInner = document.querySelector('.ticker-inner');
-      if (tickerInner) {
-        const items = [...tickers[lang], ...tickers[lang]];
-        tickerInner.innerHTML = items.map(t => `<span class="ticker-item"><span class="ticker-dot"></span> ${t}</span>`).join('');
+      var tickerInner = document.querySelector('.ticker-inner');
+      if (tickerInner && tickers[lang]) {
+        var items = tickers[lang].concat(tickers[lang]);
+        tickerInner.innerHTML = items.map(function(t) {
+          return '<span class="ticker-item"><span class="ticker-dot"></span> ' + t + '</span>';
+        }).join('');
       }
-
-      // Nav mobile links
-      const mobileLinks = document.querySelectorAll('.mobile-menu a');
-      const mobileLabels = {
-        en: ['About','Services','Process','Book a Meeting'],
-        fr: ['À Propos','Services','Processus','Réserver une Réunion']
-      };
-      mobileLinks.forEach((a, i) => {
-        if (mobileLabels[lang][i]) a.textContent = mobileLabels[lang][i];
-      });
-
       document.documentElement.lang = lang;
     }
-
   </script>
 </body>
 </html>
