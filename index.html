@@ -827,55 +827,59 @@
     /* LOGO WATERMARK */
     .logo-watermark {
       position: fixed;
-      inset: 0;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
       z-index: 0;
       pointer-events: none;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      opacity: 0.045;
+      opacity: 0.07;
+      width: min(800px, 85vw);
     }
     .logo-watermark svg {
-      width: min(900px, 90vw);
+      width: 100%;
       height: auto;
     }
     /* Ensure all content sits above watermark */
-    header, main, footer, .ticker-wrap { position: relative; z-index: 1; }
+    main, footer, .ticker-wrap { position: relative; z-index: 1; }
+    .nav-bar { z-index: 950; } /* keep nav above watermark */
   </style>
 </head>
 <body>
 
   <!-- LOGO WATERMARK BACKGROUND -->
   <div class="logo-watermark" aria-hidden="true">
-    <svg viewBox="0 0 800 200" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
+    <svg viewBox="0 0 900 220" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
       <defs>
         <linearGradient id="wm-gold" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" style="stop-color:#e1c87d"/>
-          <stop offset="50%" style="stop-color:#bca069"/>
-          <stop offset="100%" style="stop-color:#9b7a50"/>
+          <stop offset="0%" stop-color="#e1c87d"/>
+          <stop offset="50%" stop-color="#bca069"/>
+          <stop offset="100%" stop-color="#9b7a50"/>
         </linearGradient>
-        <!-- Arc shapes mimicking the logo arcs -->
-        <clipPath id="arc-clip">
-          <ellipse cx="100" cy="100" rx="90" ry="90"/>
-        </clipPath>
       </defs>
-      <!-- Left arc group (logo icon) -->
-      <g transform="translate(30, 10)">
-        <path d="M 20 100 Q 20 20 100 20 Q 60 20 60 100 Q 60 180 100 180 Q 20 180 20 100 Z"
-              fill="none" stroke="url(#wm-gold)" stroke-width="12" stroke-linecap="round" opacity="0.7"/>
-        <path d="M 40 100 Q 40 35 100 35 Q 68 35 68 100 Q 68 165 100 165 Q 40 165 40 100 Z"
-              fill="none" stroke="url(#wm-gold)" stroke-width="9" stroke-linecap="round" opacity="0.55"/>
-        <path d="M 58 100 Q 58 52 100 52 Q 76 52 76 100 Q 76 148 100 148 Q 58 148 58 100 Z"
-              fill="none" stroke="url(#wm-gold)" stroke-width="6" stroke-linecap="round" opacity="0.4"/>
+      <!-- 3 arcs mimicking the logo icon -->
+      <g transform="translate(18, 10)">
+        <!-- Outer arc -->
+        <path d="M 10,110 C 10,30 70,10 120,10 C 80,10 75,55 75,110 C 75,165 80,210 120,210 C 70,210 10,190 10,110 Z"
+              fill="none" stroke="url(#wm-gold)" stroke-width="14" stroke-linejoin="round" opacity="0.9"/>
+        <!-- Middle arc -->
+        <path d="M 35,110 C 35,45 80,30 120,30 C 90,30 88,65 88,110 C 88,155 90,190 120,190 C 80,190 35,175 35,110 Z"
+              fill="none" stroke="url(#wm-gold)" stroke-width="10" stroke-linejoin="round" opacity="0.7"/>
+        <!-- Inner arc -->
+        <path d="M 58,110 C 58,62 88,52 120,52 C 100,52 100,75 100,110 C 100,145 100,168 120,168 C 88,168 58,158 58,110 Z"
+              fill="none" stroke="url(#wm-gold)" stroke-width="7" stroke-linejoin="round" opacity="0.5"/>
       </g>
       <!-- OmniTache text -->
-      <text x="155" y="125" font-family="'DM Serif Display', serif"
-            font-size="88" font-weight="400" fill="url(#wm-gold)"
-            letter-spacing="2">OmniTache</text>
+      <text x="160" y="138" 
+            font-family="DM Serif Display, serif"
+            font-size="96" 
+            fill="url(#wm-gold)"
+            letter-spacing="3">OmniTache</text>
       <!-- Tagline -->
-      <text x="158" y="158" font-family="'Manrope', sans-serif"
-            font-size="14" font-weight="500" fill="#bca069"
-            letter-spacing="6" text-transform="uppercase">FOR CONSULTING AND SERVICES</text>
+      <text x="164" y="172"
+            font-family="Manrope, sans-serif"
+            font-size="13"
+            fill="#bca069"
+            letter-spacing="8">FOR CONSULTING AND SERVICES</text>
     </svg>
   </div>
 
