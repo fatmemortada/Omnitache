@@ -1198,15 +1198,55 @@
 
     function sendMeetingRequest(event) {
       event.preventDefault();
-      var recipient = 'h.mortada@omnitache.com';
       var name = document.getElementById('name').value.trim();
       var company = document.getElementById('company').value.trim();
       var email = document.getElementById('email').value.trim();
       var phone = document.getElementById('phone').value.trim();
       var message = document.getElementById('message').value.trim();
+
+      if (!name || !email || !message) {
+        alert('Please fill in your name, email, and message.');
+        return;
+      }
+
+      var recipient = 'h.mortada@omnitache.com';
       var subject = 'Meeting Request - ' + (company || name);
-      var body = 'Hello Omnitache,\n\nName: ' + name + '\nCompany: ' + company + '\nEmail: ' + email + '\nPhone: ' + phone + '\n\nRequest:\n' + message;
-      window.open('mailto:' + recipient + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body), '_self');
+      var body = 'Hello Omnitache,' +
+        '%0D%0A%0D%0AName: ' + encodeURIComponent(name) +
+        '%0D%0ACompany: ' + encodeURIComponent(company) +
+        '%0D%0AEmail: ' + encodeURIComponent(email) +
+        '%0D%0APhone: ' + encodeURIComponent(phone) +
+        '%0D%0A%0D%0ARequest:%0D%0A' + encodeURIComponent(message);
+
+      var gmailUrl = 'https://mail.google.com/mail/?view=cm&fs=1&to=' + recipient +
+        '&su=' + encodeURIComponent(subject) +
+        '&body=' + body;
+
+      var mailtoUrl = 'mailto:' + recipient +
+        '?subject=' + encodeURIComponent(subject) +
+        '&body=' + encodeURIComponent(
+          'Hello Omnitache,\n\nName: ' + name +
+          '\nCompany: ' + company +
+          '\nEmail: ' + email +
+          '\nPhone: ' + phone +
+          '\n\nRequest:\n' + message
+        );
+
+      // Try to open Gmail in new tab; fallback to mailto
+      var newTab = window.open(gmailUrl, '_blank');
+      if (!newTab || newTab.closed) {
+        window.location.href = mailtoUrl;
+      }
+
+      // Show confirmation message on page
+      var btn = document.querySelector('.form-submit button');
+      var originalText = btn.innerHTML;
+      btn.innerHTML = 'Request Sent! Check your email tab ✓';
+      btn.style.background = '#2a7a4b';
+      setTimeout(function() {
+        btn.innerHTML = originalText;
+        btn.style.background = '';
+      }, 4000);
     }
 
     var observer = new IntersectionObserver(function(entries) {
